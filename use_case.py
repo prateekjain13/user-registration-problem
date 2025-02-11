@@ -1,7 +1,7 @@
 import re
 import logging
 
-logging.basicConfig(filename='UC3_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='UC4_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def validate_name(name,name_type):
     logging.debug(f"Received input for {name_type} validation: '{name}'")
@@ -33,6 +33,18 @@ def validate_email(email):
         message=(f"Invalid Email: '{email}' - Your email should follow the pattern abc.xyz@bl.co.in")
         logging.error(message)
         print(message)
+        
+def validate_mobile(mobile):
+    logging.debug(f"Received input for mobile validation: '{mobile}'")
+    pattern=r'^[0-9]{2} [0-9]{10}$'
+    if re.fullmatch(pattern,mobile):
+        message=(f"Valid Mobile Number: '{mobile}'")
+        logging.info(message)
+        print(message)
+    else:
+        message=(f"Invalid Mobile Number: '{mobile}' - Your mobile number should follow the pattern '91 9919819801'")
+        logging.error(message)
+        print(message)
 
 
 
@@ -44,3 +56,6 @@ validate_name(last_name,"last name")
 
 email=input("Enter email: ")
 validate_email(email)
+
+mobile=input("Enter mobile number: ")
+validate_mobile(mobile)nan
