@@ -1,7 +1,7 @@
 import re
 import logging
 
-logging.basicConfig(filename='UC6_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='UC7_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def validate_name(name,name_type):
     logging.debug(f"Received input for {name_type} validation: '{name}'")
@@ -48,9 +48,9 @@ def validate_mobile(mobile):
 
 def validate_password(password):
     logging.debug(f"Received input for Password validation: '{password}'")
-    pattern=r'^(?=.*[A-Z]).{8,}$'
+    pattern=r'^(?=.*[A-Z])(?=.*\d).{8,}$'
     if not re.fullmatch(pattern, password):
-        message=f"Invalid Password: '{password}' - Your password should have at least 8 characters and at least 1 uppercase letter."
+        message=f"Invalid Password: '{password}' - Your password should have at least 8 characters, at least 1 uppercase letter, and at least 1 numeric digit."
         logging.error(message)
         print(message)
     else:
