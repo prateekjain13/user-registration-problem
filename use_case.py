@@ -1,61 +1,74 @@
 import re
 import logging
 
-logging.basicConfig(filename='UC4_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='UC5_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def validate_name(name,name_type):
     logging.debug(f"Received input for {name_type} validation: '{name}'")
     if len(name)<3 and name[0].isupper():
-        message=(f"Invalid {name_type}: '{name}' - It should have at least 3 characters.")
+        message=f"Invalid {name_type}: '{name}' - Your name should have at least 3 characters."
         logging.error(message)
         print(message)
     elif len(name)>=3 and not name[0].isupper():
-        message=(f"Invalid {name_type}: '{name}' - The first letter should be capital.")
+        message=f"Invalid {name_type}: '{name}' - The first letter should be capital."
         logging.error(message)
         print(message)
     elif len(name)<3 and not name[0].isupper():
-        message=(f"Invalid {name_type}: '{name}' - The first letter should be capital and it should also have at least 3 characters.")
+        message=f"Invalid {name_type}: '{name}' - The first letter should be capital and it should have at least 3 characters."
         logging.critical(message)
         print(message)
     else:
-        message=(f"Valid {name_type}: '{name}'")
+        message=f"Valid {name_type}: '{name}'"
         logging.info(message)
         print(message)
-        
+
 def validate_email(email):
     logging.debug(f"Received input for Email validation: '{email}'")
     pattern=r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$'
     if re.fullmatch(pattern,email):
-        message=(f"Valid Email: '{email}'")
+        message=f"Valid Email: '{email}'"
         logging.info(message)
         print(message)
     else:
-        message=(f"Invalid Email: '{email}' - Your email should follow the pattern abc.xyz@bl.co.in")
+        message=f"Invalid Email: '{email}' - Your email should follow the pattern abc.xyz@bl.co.in"
         logging.error(message)
         print(message)
-        
+
 def validate_mobile(mobile):
-    logging.debug(f"Received input for mobile validation: '{mobile}'")
+    logging.debug(f"Received input for Mobile validation: '{mobile}'")
     pattern=r'^[0-9]{2} [0-9]{10}$'
     if re.fullmatch(pattern,mobile):
-        message=(f"Valid Mobile Number: '{mobile}'")
+        message=f"Valid Mobile Number: '{mobile}'"
         logging.info(message)
         print(message)
     else:
-        message=(f"Invalid Mobile Number: '{mobile}' - Your mobile number should follow the pattern '91 9919819801'")
+        message=f"Invalid Mobile Number: '{mobile}' - Your mobile number should follow the pattern '91 9919819801'"
         logging.error(message)
         print(message)
 
-
+def validate_password(password):
+    logging.debug(f"Received input for Password validation: '{password}'")
+    pattern=r'^.{8,}$'
+    if not re.fullmatch(pattern, password):
+        message=f"Invalid Password: '{password}' - Your password should have at least 8 characters."
+        logging.error(message)
+        print(message)
+    else:
+        message=f"Valid Password"
+        logging.info(message)
+        print(message)
 
 first_name=input("Enter first name: ")
-validate_name(first_name,"first name")
+validate_name(first_name,"First Name")
 
 last_name=input("Enter last name: ")
-validate_name(last_name,"last name")
+validate_name(last_name,"Last Name")
 
 email=input("Enter email: ")
 validate_email(email)
 
 mobile=input("Enter mobile number: ")
-validate_mobile(mobile)nan
+validate_mobile(mobile)
+
+password=input("Enter password: ")
+validate_password(password)
