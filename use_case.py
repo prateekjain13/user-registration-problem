@@ -1,7 +1,7 @@
 import re
 import logging
 
-logging.basicConfig(filename='UC7_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='UC8_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def validate_name(name,name_type):
     logging.debug(f"Received input for {name_type} validation: '{name}'")
@@ -48,9 +48,18 @@ def validate_mobile(mobile):
 
 def validate_password(password):
     logging.debug(f"Received input for Password validation: '{password}'")
-    pattern=r'^(?=.*[A-Z])(?=.*\d).{8,}$'
-    if not re.fullmatch(pattern, password):
-        message=f"Invalid Password: '{password}' - Your password should have at least 8 characters, at least 1 uppercase letter, and at least 1 numeric digit."
+    pattern=r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$'
+    if not re.fullmatch(pattern,password):
+        if password.isdigit():
+            message=f"Invalid Password: '{password}' - Your password should not contain only numbers and must have at least 1 uppercase letter."
+        elif len(password)<8:
+            message=f"Invalid Password: '{password}' - Your password should have at least 8 characters."
+        elif not any(char.isupper() for char in password):
+            message=f"Invalid Password: '{password}' - Your password should contain at least 1 uppercase letter."
+        elif not any(char.isdigit() for char in password):
+            message=f"Invalid Password: '{password}' - Your password should contain at least 1 numeric digit."
+        elif not any(not char.isalnum() for char in password):
+            message=f"Invalid Password: '{password}' - Your password should contain exactly 1 special character."
         logging.error(message)
         print(message)
     else:
