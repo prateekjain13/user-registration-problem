@@ -1,7 +1,7 @@
 import re
 import logging
 
-logging.basicConfig(filename='UC2_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='UC3_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def validate_name(name,name_type):
     logging.debug(f"Received input for {name_type} validation: '{name}'")
@@ -21,6 +21,20 @@ def validate_name(name,name_type):
         message=(f"Valid {name_type}: '{name}'")
         logging.info(message)
         print(message)
+        
+def validate_email(email):
+    logging.debug(f"Received input for Email validation: '{email}'")
+    pattern=r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$'
+    if re.fullmatch(pattern,email):
+        message=(f"Valid Email: '{email}'")
+        logging.info(message)
+        print(message)
+    else:
+        message=(f"Invalid Email: '{email}' - Your email should follow the pattern abc.xyz@bl.co.in")
+        logging.error(message)
+        print(message)
+
+
 
 first_name=input("Enter first name: ")
 validate_name(first_name,"first name")
@@ -28,4 +42,5 @@ validate_name(first_name,"first name")
 last_name=input("Enter last name: ")
 validate_name(last_name,"last name")
 
-
+email=input("Enter email: ")
+validate_email(email)
