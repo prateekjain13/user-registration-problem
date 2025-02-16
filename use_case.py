@@ -1,83 +1,101 @@
 import re
 import logging
+from logger_config import setup_logging
 
-logging.basicConfig(filename='UC8_log_file.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def validate_name(name,name_type):
-    logging.debug(f"Received input for {name_type} validation: '{name}'")
-    if len(name)<3 and name[0].isupper():
-        message=f"Invalid {name_type}: '{name}' - Your name should have at least 3 characters."
-        logging.error(message)
-        print(message)
-    elif len(name)>=3 and not name[0].isupper():
-        message=f"Invalid {name_type}: '{name}' - The first letter should be capital."
-        logging.error(message)
-        print(message)
-    elif len(name)<3 and not name[0].isupper():
-        message=f"Invalid {name_type}: '{name}' - The first letter should be capital and it should have at least 3 characters."
-        logging.critical(message)
-        print(message)
-    else:
+def validate_name(name, name_type):
+    """Validates name using regex."""
+    pattern=r"^[A-Z][a-zA-Z]{2,}$"
+    
+    if re.fullmatch(pattern, name):
         message=f"Valid {name_type}: '{name}'"
         logging.info(message)
         print(message)
+        return True
+    else:
+        message=f"Invalid {name_type}: '{name}' - It should start with a capital letter, have at least 3 characters, and contain only alphabets."
+        logging.error(message)
+        print(message)
+        return False
 
 def validate_email(email):
-    logging.debug(f"Received input for Email validation: '{email}'")
+    """Validates an email using regex."""
     pattern=r'^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)?@[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$'
-    if re.fullmatch(pattern,email):
+    
+    if re.fullmatch(pattern, email):
         message=f"Valid Email: '{email}'"
         logging.info(message)
         print(message)
+        return True
     else:
-        message=f"Invalid Email: '{email}' - Your email should follow the pattern abc.xyz@bl.co.in"
+        message=f"Invalid Email: '{email}' - It should follow the pattern abc.xyz@bl.co.in"
         logging.error(message)
         print(message)
+        return False
 
 def validate_mobile(mobile):
-    logging.debug(f"Received input for Mobile validation: '{mobile}'")
+    """Validates a mobile number using regex."""
     pattern=r'^[0-9]{2} [0-9]{10}$'
-    if re.fullmatch(pattern,mobile):
+    
+    if re.fullmatch(pattern, mobile):
         message=f"Valid Mobile Number: '{mobile}'"
         logging.info(message)
         print(message)
+        return True
     else:
-        message=f"Invalid Mobile Number: '{mobile}' - Your mobile number should follow the pattern '91 9919819801'"
+        message=f"Invalid Mobile Number: '{mobile}' - It should follow the pattern '91 9919819801'"
         logging.error(message)
         print(message)
+        return False
 
 def validate_password(password):
-    logging.debug(f"Received input for Password validation: '{password}'")
-    pattern=r'^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$'
-    if not re.fullmatch(pattern,password):
-        if password.isdigit():
-            message=f"Invalid Password: '{password}' - Your password should not contain only numbers and must have at least 1 uppercase letter."
-        elif len(password)<8:
-            message=f"Invalid Password: '{password}' - Your password should have at least 8 characters."
-        elif not any(char.isupper() for char in password):
-            message=f"Invalid Password: '{password}' - Your password should contain at least 1 uppercase letter."
-        elif not any(char.isdigit() for char in password):
-            message=f"Invalid Password: '{password}' - Your password should contain at least 1 numeric digit."
-        elif not any(not char.isalnum() for char in password):
-            message=f"Invalid Password: '{password}' - Your password should contain exactly 1 special character."
-        logging.error(message)
-        print(message)
+    """Validates a password with at least 8 characters, 1 uppercase letter, 1 digit, and 1 special character."""
+    if len(password)<8:
+        message=f"Invalid Password: '{password}' - Your password should have at least 8 characters."
+    elif not any(char.isupper() for char in password):
+        message=f"Invalid Password: '{password}' - Your password should contain at least 1 uppercase letter."
+    elif not any(char.isdigit() for char in password):
+        message=f"Invalid Password: '{password}' - Your password should contain at least 1 numeric digit."
+    elif not any(not char.isalnum() for char in password):
+        message=f"Invalid Password: '{password}' - Your password should contain at least 1 special character."
     else:
-        message=f"Valid Password"
+        message="Valid Password"
         logging.info(message)
         print(message)
+        return True
 
-first_name=input("Enter first name: ")
-validate_name(first_name,"First Name")
+    logging.error(message)
+    print(message)
+    return False
 
-last_name=input("Enter last name: ")
-validate_name(last_name,"Last Name")
+def main():
+    """Runs input validation until valid details are entered."""
+    setup_logging()
+    
+    while True:
+        first_name=input("Enter first name: ").strip()
+        if validate_name(first_name, "First Name"):
+            break
+    
+    while True:
+        last_name=input("Enter last name: ").strip()
+        if validate_name(last_name, "Last Name"):
+            break
+    
+    while True:
+        email=input("Enter email: ").strip()
+        if validate_email(email):
+            break
+    
+    while True:
+        mobile=input("Enter mobile number: ").strip()
+        if validate_mobile(mobile):
+            break
 
-email=input("Enter email: ")
-validate_email(email)
+    while True:
+        password=input("Enter password: ").strip()
+        if validate_password(password):
+            break
 
-mobile=input("Enter mobile number: ")
-validate_mobile(mobile)
-
-password=input("Enter password: ")
-validate_password(password)
+if __name__ == "__main__":
+    main()
