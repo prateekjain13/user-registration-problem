@@ -33,6 +33,21 @@ def validate_email(email):
         print(message)
         return False
 
+def validate_mobile(mobile):
+    """Validates a mobile number using regex."""
+    pattern=r'^[0-9]{2} [0-9]{10}$'
+    
+    if re.fullmatch(pattern, mobile):
+        message=f"Valid Mobile Number: '{mobile}'"
+        logging.info(message)
+        print(message)
+        return True
+    else:
+        message=f"Invalid Mobile Number: '{mobile}' - It should follow the pattern '91 9919819801'"
+        logging.error(message)
+        print(message)
+        return False
+
 def main():
     """Runs input validation until valid details are entered."""
     setup_logging()
@@ -50,6 +65,11 @@ def main():
     while True:
         email=input("Enter email: ").strip()
         if validate_email(email):
+            break
+    
+    while True:
+        mobile=input("Enter mobile number: ").strip()
+        if validate_mobile(mobile):
             break
 
 if __name__ == "__main__":
