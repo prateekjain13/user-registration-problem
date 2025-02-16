@@ -1,5 +1,5 @@
-import logging
 import re
+import logging
 from logger_config import setup_logging
 
 
@@ -49,19 +49,24 @@ def validate_mobile(mobile):
         return False
 
 def validate_password(password):
-    """Validates a password with at least 8 characters, 1 uppercase letter, and 1 numeric digit."""
-    pattern=r'^(?=.*[A-Z])(?=.*\d).{8,}$'
-    
-    if re.fullmatch(pattern, password):
+    """Validates a password with at least 8 characters, 1 uppercase letter, 1 digit, and 1 special character."""
+    if len(password)<8:
+        message=f"Invalid Password: '{password}' - Your password should have at least 8 characters."
+    elif not any(char.isupper() for char in password):
+        message=f"Invalid Password: '{password}' - Your password should contain at least 1 uppercase letter."
+    elif not any(char.isdigit() for char in password):
+        message=f"Invalid Password: '{password}' - Your password should contain at least 1 numeric digit."
+    elif not any(not char.isalnum() for char in password):
+        message=f"Invalid Password: '{password}' - Your password should contain at least 1 special character."
+    else:
         message="Valid Password"
         logging.info(message)
         print(message)
         return True
-    else:
-        message=f"Invalid Password: '{password}' - It should have at least 8 characters, 1 uppercase letter, and 1 numeric digit."
-        logging.error(message)
-        print(message)
-        return False
+
+    logging.error(message)
+    print(message)
+    return False
 
 def main():
     """Runs input validation until valid details are entered."""
