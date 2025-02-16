@@ -49,8 +49,8 @@ def validate_mobile(mobile):
         return False
 
 def validate_password(password):
-    """Validates a password with at least 8 characters and 1 uppercase letter."""
-    pattern=r'^(?=.*[A-Z]).{8,}$'
+    """Validates a password with at least 8 characters, 1 uppercase letter, and 1 numeric digit."""
+    pattern=r'^(?=.*[A-Z])(?=.*\d).{8,}$'
     
     if re.fullmatch(pattern, password):
         message="Valid Password"
@@ -58,7 +58,7 @@ def validate_password(password):
         print(message)
         return True
     else:
-        message=f"Invalid Password: '{password}' - It should have at least 8 characters and contain at least 1 uppercase letter."
+        message=f"Invalid Password: '{password}' - It should have at least 8 characters, 1 uppercase letter, and 1 numeric digit."
         logging.error(message)
         print(message)
         return False
