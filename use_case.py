@@ -2,6 +2,7 @@ import logging
 import re
 from logger_config import setup_logging
 
+
 def validate_name(name, name_type):
     """Validates name using regex."""
     pattern=r"^[A-Z][a-zA-Z]{2,}$"
@@ -27,7 +28,7 @@ def validate_email(email):
         print(message)
         return True
     else:
-        message=f"Invalid Email: '{email}' - Your email should follow the pattern abc.xyz@bl.co.in"
+        message=f"Invalid Email: '{email}' - It should follow the pattern abc.xyz@bl.co.in"
         logging.error(message)
         print(message)
         return False
@@ -48,8 +49,8 @@ def validate_mobile(mobile):
         return False
 
 def validate_password(password):
-    """Validates a password with at least 8 characters."""
-    pattern=r'^.{8,}$'
+    """Validates a password with at least 8 characters and 1 uppercase letter."""
+    pattern=r'^(?=.*[A-Z]).{8,}$'
     
     if re.fullmatch(pattern, password):
         message="Valid Password"
@@ -57,7 +58,7 @@ def validate_password(password):
         print(message)
         return True
     else:
-        message=f"Invalid Password: '{password}' - It should have at least 8 characters."
+        message=f"Invalid Password: '{password}' - It should have at least 8 characters and contain at least 1 uppercase letter."
         logging.error(message)
         print(message)
         return False
